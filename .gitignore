@@ -1,0 +1,11 @@
+# python
+__pycache__/
+
+# latex
+*.aux
+*.log
+*.lot
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
