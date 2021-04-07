@@ -1,81 +1,48 @@
 import random
 import numpy as np
 
-def mod2(a,n):
-    for i in range(n):
-        a[i]%=2
+from tools import *
+
+# On créer une matrice de la forme suivante:
+# 1 1 1 1 1 1 0 . . . . . . . 0 0 0 0
+# 0 0 0 0 0 0 1 1 1 1 1 1 0 0 . . . .
+# ...................................
+def lowDensityMatrix(n):
+    a = np.zeros((n//6,n))
+    i , j = 0 , 0
+    while j < n//6 and i < n:
+        if (i+6)%6 == 0 and i >= 5:
+            j = j+1
+        a[j,i] = 1
+        i = i+1
     return a
 
-# retourne la ind-ème colonne
-# de la matrice a
-def getCol(a,ind):
-    a = a.T
-    return a[ind]
+def createGallagerMatrix(n):
+    a = lowDensityMatrix(n)
+    b = createRandFlipMatrix(a)
+    while not colsEquals(a,b,n//6):
+        b = createRandFlipMatrix(a)
+    c = createRandFlipMatrix(a)
+    while not colsEquals(a,c,n//6) and not colsEquals(b,c,n//6):
+        c = createRandFlipMatrix(a)
+    return np.concatenate(((np.concatenate((a,b), axis=0)),c),axis=0)
 
-# retourne une liste d'indice
-# qui contiennent des 1
-def getInd1inCol(a,n):
-    res = []
-    for i in range(n):
-        if a[i] == 1:
-            res.append(i)
-    return res
-
-# calcul le poids d'un vecteur colonne
-def poidsOfCol(a,n):
-    cpt = 0
-    for i in range(n):
-        if a[i] == 1:
-            cpt+=1
-    return cpt
-
-# teste si deux colonnes sont égales
-def colEquals(a,b,n):
-    return np.array_equal(a,b)
-
-"""
-A MODIFIER
-"""
-def testIfColAreEquals(A,B,N):
-    A = A.T
-    B = B.T
-    for i in range(N):
-        for j in range(N):
-            if np.array_equal(A[i],B[j]):
-                return True
-    return False
-
-def createMatrix(N):
-    A = np.zeros(N*N//6)
-    A = np.reshape(A,(N//6,N))
-    i , j = 0 , 0
-    while j < N//6 and i < N:
-        if (i+6)%6 == 0 and i>=5:
-            j=j+1
-        A[j,i] = 1
-        i=i+1
-    return A
-
-# Permutation au hasard des colonnes d'une matrice a
-def createRandFlipMatrix(A,N):
-    B = np.random.permutation(A.T)
-    return B.T
-
-def createMatrixLDPC(N):
-    A = createMatrix(N)
-    B = createRandFlipMatrix(A,N)
-    while not testIfColAreEquals(A,B,N//6):
-        B = createRandFlipMatrix(A,N)
-    C = createRandFlipMatrix(A,N)
-    while not testIfColAreEquals(A,C,N//6) and not testIfColAreEquals(B,C,N//6):
-        C = createRandFlipMatrix(B,N)
-    return np.concatenate(((np.concatenate((A,B), axis=0)),C),axis=0)
-
-def setRandomErrorVector(poids,max_loop,N):
+# Retourne une liste de vecteur erreur d'un certain poids
+def randomErrorVectorGenerator(poids,max_loop,n):
     errors = []
     for _ in range(max_loop):
-        tmp = np.zeros(N)
-        for _ in range(poids):
-            tmp[random.randint(0,N)] = 1
+        tmp = np.zeros(n)
+        while weightOfCol(tmp,n) != poids:
+            tmp[random.randint(0,n-1)] = 1
         errors.append(tmp)
     return errors
+
+# Retourne une matrice de taille (n,n//2) tel que les colonnes est un
+# poids prescrit. On ne produit pas de colonnes identiques.
+def matrixFromWeight(poids,n):
+    L = listOfRandomIndOne(poids,n)
+    res = np.array(L[0])
+    for col in L:
+        if np.array_equal(col,L[0]) == False:
+            res = np.concatenate((res,np.array(col)), axis=0)
+    return np.reshape(res, (n,n//2)).T
