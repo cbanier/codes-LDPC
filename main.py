@@ -59,14 +59,16 @@ if __name__ == "__main__":
     N = 54
     loop = 10
     h = createMatrixLDPC(N*10) #size 540
-    displayTestLoop(h,1,loop,N*10)
-    displayTestLoop(h,2,loop,N*10)
-    displayTestLoop(h,3,loop,N*10)
-    displayTestLoop(h,4,loop,N*10)
+    #displayTestLoop(h,1,loop,N*10)
+    #displayTestLoop(h,2,loop,N*10)
+    #displayTestLoop(h,3,loop,N*10)
+    #displayTestLoop(h,4,loop,N*10)
+    #displayTestLoop(h,5,loop,N*10)
+    displayTestLoop(h,200,loop,N*10)
 
     # another matrix
-    h1 = createMatrixLDPC(N*10) #size 540
-    displayTestLoop(h1,1,loop,N*10)
-    displayTestLoop(h1,2,loop,N*10)
-    displayTestLoop(h1,3,loop,N*10)
-    displayTestLoop(h1,4,loop,N*10)
+    #h1 = createMatrixLDPC(N*10) #size 540
+    #displayTestLoop(h1,1,loop,N*10)
+    #displayTestLoop(h1,2,loop,N*10)
+    #displayTestLoop(h1,3,loop,N*10)
+    #displayTestLoop(h1,4,loop,N*10)
