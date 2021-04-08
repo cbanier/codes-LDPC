@@ -1,0 +1,139 @@
+\documentclass[french,nochapter,11pt]{rapportUB}  
+% Options french (1-) ou english (2-)
+%    1- si vous rédigez en français (chargement du package [french]{babel})
+%    2- si vous rédigez en anglais (chargement du package [english]{babel})
+% Options chapter (1-) ou nochapter (2-)
+%    1- la commande \chapter peut être utilisée dans le document (la classe report est chargée)
+%    2- la commande \chapter NE peut PAS être utilisée dans le document (la classe article est chargée)
+% Options 10pt ou 11pt ou 12pt (taille des caractères)
+% Option nologo (à utiliser seulement si vous ne souhaitez pas afficher le logo de l'université sur la première page / le logo doit être dans le même dossier que votre fichier tex et s'appeler logo (l'extension n'a pas d'importance)
+%
+% Les options par défaut sont french, nochapter,11pt
+
+\college{Collège Sciences et Technologies}
+\uf{UF Mathématiques et Interactions - Informatique}
+\program{Licence Mathématiques Informarique} %A remplir
+\course{Projet tutoré} %A remplir
+\academicyear{2020 -- 2021} %A remplir
+\author{ %A remplir
+  Corentin Banier
+  \\
+  Maher Karboul
+}
+
+%Paquetages additionnels
+\usepackage{placeins}
+\usepackage{multirow}
+\usepackage{framed}
+%Pour gérer la bibliographie
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\addbibresource{biblio.bib}
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+
+%Déclaration d'un nouvel opérateur
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+
+\begin{document}
+
+\title{Codes LDPC}
+
+\maketitle
+
+\begin{center}
+\tableofcontents %affichage de la table des matières
+\clearpage
+\end{center}
+
+%-----------------------------------------------------
+% IMPORTANT : A décommenter pour ajouter l'engagement de non plagiat au rapport.
+%\nonplagiat{Prenom1 Nom1}[Prenom2 Nom2][Prenom3 Nom3]
+%-----------------------------------------------------
+
+
+\section{Introduction}
+\label{sec:introduction}
+
+
+La figure
+\ref{fig:logo} présente le logo de l'université.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.1]{logo.eps}  
+\caption{Le logo de l'université}
+\label{fig:logo}
+\end{figure}
+
+
+L'état de l'art de
+\textcite{Applegate2006} sur le problème de voyageur de commerce est une référence sur ce sujet.
+
+\vspace{0.8cm}
+Dans la suite du document, la section \ref{sec:formalisation} présente la formalisation du problème. Dans la section \ref{sec:modelisation}, nous modélisons celui-ci comme un programme linéaire en nombre entiers. Nous introduisons plusieurs algorithmes de résolutions du problème dans la section \ref{sec:algo} ....
+
+
+\section{Formalisation du problème}
+\label{sec:formalisation}
+
+Le problème se définit de la mnière suivante ....
+
+\section{Modélisation du problème}
+\label{sec:modelisation}
+Un programme linéaire en nombre entiers pour le problème de sac-à-dos est le suivant :
+
+\begin{align}
+\max~ &  \sum_{i=1}^{n}p_ix_i \label{eq_obj} \\
+sc~ & \sum_{i=1}^{n}w_ix_i \leq W \label{eq_ct1} \\
+& x_i \in \{0,1\} & \forall i=1...n \label{eq_ct2} 
+\end{align}
+
+L'objectif \eqref{eq_obj} consiste à maximiser le profit associé aux objets sélectionnés. 
+La contrainte \eqref{eq_ct1} prend en compte la capacité du sac lors de la sélection des objets.
+La contrainte \eqref{eq_ct2} définit le domaine des variables de décisions.
+
+
+\section{Algorithmes de résolution}
+\label{sec:algo}
+
+Pour écrire des algorithmes, le paquetage suivant est très utile : \url{http://tug.ctan.org/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf}  
+
+
+\section{Expérimentations et résultats}
+\label{sec:exp}
+
+La Table \ref{table:resultats} présente un résumé des résultats de nos expérimentations. 
+
+\begin{table}[htbp]
+  \centering
+  \caption{Comparaison des différentes méthodes}
+  \label{table:resultats}
+    \begin{tabular}{l|rrrrr}
+    \hline
+    \multirow{2}[0]{*}{Algorithme}&  \multicolumn{2}{c}{Temps CPU (ms)}  & \multicolumn{2}{c}{Gap MS} &  \multirow{2}[0]{*}{\#Données MS}  \\
+        & \multicolumn{1}{c}{Moyenne}   & \multicolumn{1}{c}{Ecart type} & \multicolumn{1}{c}{Moyenne} & \multicolumn{1}{c}{Ecart type} & \\
+          \hline
+    Heuristique PPV & 29 & 96 & 8.4\% & \textbf{36\%} &  6/38\\
+    Heuristique MI & 16984 & 78093  & \textbf{1.3\%} & 42\% &   \textbf{30/38} \\
+    \hline
+    \end{tabular}%
+\end{table}%
+
+\FloatBarrier
+
+\section{Conclusion}
+\label{sec:conclusion}
+C'est la fin.
+
+
+%% Les appendices commencent après la commande \appendix
+%% Les commandes \chapter (si l'option chapter est sélectionnée), \section, \subsection peuvent s'utiliser comme habituellement
+%\appendix
+
+%\clearpage % à utiliser pour afficher la biblographie sur une nouvelle page
+% References
+\printbibliography
+
+
+\end{document}
