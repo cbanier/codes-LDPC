@@ -43,8 +43,52 @@ def test_decode_LDPC(H,weight_e,max_loop,n):
             cpt+=1
     return cpt/max_loop
 
+########################################################
+#                    Strict version                    #
+########################################################
+
+def decode_LDPC_aux_strict(H,S,weight_S,n,break_cpt):
+    if break_cpt >= 25:
+        return []
+    L = []
+    for i in range(n):
+        if weightOfCol(mod2(S + getCol(H,i), n//2),n//2) < weight_S:
+            L.append(i)
+    S2 = np.zeros(n//2)
+    for i in L:
+        S2 = S2 + getCol(H,i)
+    S2 = mod2(S2, n//2)
+    S3 = np.zeros(n//2)
+    S3 = mod2(S+S2, n//2)
+    if weightOfCol(S3,n//2) == 0:
+        return L
+    else:
+        return decode_LDPC_aux(H,S3,weightOfCol(S3,n//2),n,break_cpt+1)
+
+def decode_LDPC_strict(H,e,n):
+    S = mod2(H@(e.T),n//2)
+    weight_S = weightOfCol(S,n//2)
+    ldpc = decode_LDPC_aux_strict(H,S,weight_S,n,1)
+    return ldpc
+
+def test_decode_LDPC_strict(H,weight_e,max_loop,n):
+    cpt = 0
+    errors = randomErrorVectorGenerator(weight_e,max_loop,n)
+    for e in errors:
+        if decode_LDPC_strict(H,e,n) == getInd1inCol(e,n):
+            cpt+=1
+    return cpt/max_loop
+
+########################################################
+#                  Display functions                   #
+########################################################
+
 def displayTestLoop(H,weight_e,max_loop,n):
     print(f"Test sur {max_loop} vecteurs erreurs de poids {weight_e}: {test_decode_LDPC(H,weight_e,max_loop,n)}")
+    return None
+
+def displayTestLoop_strict(H,weight_e,max_loop,n):
+    print(f"Test sur {max_loop} vecteurs erreurs de poids {weight_e}: {test_decode_LDPC_strict(H,weight_e,max_loop,n)}")
     return None
 
 def displayTestLoopWithTime(H,weight_e,max_loop,n):
@@ -54,15 +98,55 @@ def displayTestLoopWithTime(H,weight_e,max_loop,n):
     print("Time:",end - start)
     return None
 
-if __name__ == "__main__":
-    n = 1000
-    H = matrixFromWeight(5,n)
-    print(f"Soit H une matrice de taille {n}x{n//2}\n")
-    for i in range(1,16):
-        displayTestLoop(H,i,25,n)
+def displayTest(res,weight_e,max_loop):
+    print(f"Test sur {max_loop} vecteurs erreurs de poids {weight_e}: {res}")
+    return None
 
-    n*=2
-    H = matrixFromWeight(5,n)
-    print(f"\nNouvelle matrice de taille {n}x{n//2}\n")
-    for i in range(1,16):
-        displayTestLoop(H,i,25,n)
+########################################################
+#                  Experimental tests                  #
+########################################################
+
+def opt_weight_search(max_loop,n):
+    w = 1
+    for j in range(25):
+        start = time()
+        H = matrixFromWeight(w+j,n)
+        print(f"Soit H une matrice de taille {n//2}x{n}")
+        print(f"Dont le poids des colonnes est {w+j}.\n")
+        i = 1
+        # Arrêt lorsque la proba est inférieur à 0.4
+        tmp = test_decode_LDPC(H,i,max_loop,n)
+        while tmp >= 0.5:
+            displayTest(tmp,i,max_loop)
+            i += 1
+            tmp = test_decode_LDPC(H,i,max_loop,n)
+        displayTest(tmp,i,max_loop)
+        print("Time:",time() - start, " secondes \n")
+    return None
+
+# Lorsqu'on a trouvé le poids optimal pour le décodage d'une matrice
+# de taille (n//2,n) on regarde si on peut améliorer le décodage.
+
+def opt_weight_search_strict(borne_inf,borne_sup,max_loop,n):
+    w , max_ite = 0 , 3
+    print("Version optimal")
+    for j in range(borne_inf,borne_sup):
+        for i in range(max_ite):
+            print(f"{i+1} itération(s):")
+            start = time()
+            H = matrixFromWeight(w+j,n)
+            print(f"Soit H une matrice de taille {n//2}x{n}")
+            print(f"Dont le poids des colonnes est {w+j}.\n")
+            i = 1
+            tmp = test_decode_LDPC_strict(H,i,max_loop,n)
+            while tmp >= 0.5:
+                displayTest(tmp,i,max_loop)
+                i += 1
+                tmp = test_decode_LDPC_strict(H,i,max_loop,n)
+            displayTest(tmp,i,max_loop)
+            print("Time:",time() - start, " secondes \n")
+    return None
+
+if __name__ == "__main__":
+    opt_weight_search(25,1000)
+    opt_weight_search_strict(7,15,25,1000)
