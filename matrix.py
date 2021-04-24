@@ -7,18 +7,22 @@ from tools import *
 # 1 1 1 1 1 1 0 . . . . . . . 0 0 0 0
 # 0 0 0 0 0 0 1 1 1 1 1 1 0 0 . . . .
 # ...................................
-def lowDensityMatrix(n):
-    a = np.zeros((n//6,n))
+def lowDensityMatrix(weight_row,n):
+    a = np.zeros((n//weight_row,n))
     i , j = 0 , 0
-    while j < n//6 and i < n:
-        if (i+6)%6 == 0 and i >= 5:
+    while j < n//weight_row and i < n:
+        if (i+weight_row)%weight_row == 0 and i >= weight_row:
             j = j+1
         a[j,i] = 1
         i = i+1
     return a
 
-def createGallagerMatrix(n):
-    a = lowDensityMatrix(n)
+# La fonction construit une matrice de Gallager ici, n doit
+# être un multiple de 6 pour que la fonction marche
+# Par exemple, on peut appeler la fonctions avec les couples suivants:
+# (5,30) ; (6,54) ; (7;84) ; (8;120) ; ....
+def createGallagerMatrix(weight_row,n):
+    a = lowDensityMatrix(weight_row,n)
     b = createRandFlipMatrix(a)
     while not colsEquals(a,b,n//6):
         b = createRandFlipMatrix(a)

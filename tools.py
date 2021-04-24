@@ -69,3 +69,15 @@ def listOfRandomIndOne(weight,n):
         if tmp not in L:
             L.append(tmp)
     return L
+
+# Détermine la taille de la matrice pour un poids de
+# ligne donnée
+def determineSizeForGallager(weight_row):
+    i , j = 5 , 6
+    while i < weight_row:
+        i+=1
+        j+=3
+    if i == weight_row:
+        return i*j
+    else:
+        raise ValueError
