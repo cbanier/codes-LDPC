@@ -54,47 +54,58 @@
 
 \section{Introduction}
 \label{sec:introduction}
+La conception des codes LDPC binaires avec un faible poids d'erreurs demeurre un problème non entiérement résolu. 
+Les codes LDPC (Low Density Parity Check) sont des codes linéaires correcteurs d'erreurs qui assurent la transmission d'informations. 
+Ils forment une classe de codes en bloc qui se caractérisent par une matrice de contrôle creuse. Ils ont été décrits pour la première 
+fois dans la thèse de Gallager au début des années 60. Dans ce travail , on va reprendre l'algorithme de Gallager et on va l'implémenter 
+et l'analyse afin de l'optimiser au maximum.\newline
+Le rapport est organisé de la manière suivante . La section \ref{sec:fabrication} présente les étapes de fabrication d'un code LDPC 
+ainsi qu'une matrice de contrôle qui répond à des conditions bien spécifiques. La section \ref{sec:algo} présente l'algorithme 
+détaillé de décodage LDPC. La section \ref{sec:exp} est dédiée aux expériences pratiques qu'on a effectué durant l'implémentation 
+de l'algorithme. Enfin, la section \ref{sec:conclusion} sera notre conclusion sur le projet.
 
-
-La figure
-\ref{fig:logo} présente le logo de l'université.
-
-\begin{figure}[!h]
-\centering
-\includegraphics[scale=0.1]{logo.eps}  
-\caption{Le logo de l'université}
-\label{fig:logo}
-\end{figure}
-
-
-L'état de l'art de
-\textcite{Applegate2006} sur le problème de voyageur de commerce est une référence sur ce sujet.
+\subsection{Codes correcteurs}
+Lors de la transmission d'une information , des erreurs peuvent se produire. Cette problématique de corrections des erreurs de transmission est très importante dans notre monde connecté, qu'il s'agisse des communications entre ordinateurs par internet, des conversations téléphoniques etc.. \newline
+Un code correcteur, souvent désigné par le sigle anglais ECC (Error-correcting code), est une technique de codage basée sur la redondance. \newline
+Un code est une application ijective $\Phi:\{0,1\}^k \rightarrow \{0,1\}^n $. \newline
+Le paramètre k est appelé la \textbf{dimension} du code $\Phi$ et le paramètre n est appelé la \textbf{longueur} du code : on dit que $\Phi$ est un code de paramètres (k,n). \newline
+Soit $\Phi$ un code d'image C . \newline
+On appelle \textbf{capacité de correction} de $\Phi$ le plus grand entier $e_c$ tel qu'on soit toujours capable de corriger $e_c$ erreurs ou moins. \newline
+On appelle \textbf{distance minimale} de $\Phi$ et on note $d_c$ la plus petite distance non nulle entre deux mots de code. \newline
+On a \textbf{$e_c = $} $\frac{d_c-1}{2}$
+Parmi les exemples de codes correcteurs qu'on peut citer: code de répétition, code carré et le code de Hamming
+\subsubsection{Code de répétition}
+Le code de répétition se résume par transmettre le message deux fois pour s'assurer contre les erreurs. Par exemple, Alice veut transmettre un mot de quatre bits à Bob. 
+\begin{tabbing}
+\hspace{5cm}\textbf{m=0111} \newline
+\end{tabbing}
+Elle va donc envoyer le mot codé
+\begin{tabbing}
+    \hspace{5cm}\textbf{c=01110111}
+\end{tabbing}
+le mot reçu par Bob sera noté y. Par exemple, si Bob reçoit
+\begin{tabbing}
+    \hspace{5cm}\textbf{y=01110110}
+\end{tabbing}
+Il peut constater qu'une erreur, au moins, s'est produite. Il peut dire que l'erreur est soit sur le quatrième ou le huitième bit.
+\subsubsection{Code carré}
+\subsubsection{Code de Hamming}
+\subsection{Matrice de parité}
+\subsection{Matrice génératrice}
+\subsection{Syndrome}
 
 \vspace{0.8cm}
-Dans la suite du document, la section \ref{sec:formalisation} présente la formalisation du problème. Dans la section \ref{sec:modelisation}, nous modélisons celui-ci comme un programme linéaire en nombre entiers. Nous introduisons plusieurs algorithmes de résolutions du problème dans la section \ref{sec:algo} ....
+Dans la suite du document, la section \ref{sec:fabrication} présente la formalisation du problème.
 
 
-\section{Formalisation du problème}
-\label{sec:formalisation}
+\section{Comment fabrique-t-on un code LDPC ?}
+\label{sec:fabrication}
 
-Le problème se définit de la mnière suivante ....
-
-\section{Modélisation du problème}
-\label{sec:modelisation}
-Un programme linéaire en nombre entiers pour le problème de sac-à-dos est le suivant :
-
-\begin{align}
-\max~ &  \sum_{i=1}^{n}p_ix_i \label{eq_obj} \\
-sc~ & \sum_{i=1}^{n}w_ix_i \leq W \label{eq_ct1} \\
-& x_i \in \{0,1\} & \forall i=1...n \label{eq_ct2} 
-\end{align}
-
-L'objectif \eqref{eq_obj} consiste à maximiser le profit associé aux objets sélectionnés. 
-La contrainte \eqref{eq_ct1} prend en compte la capacité du sac lors de la sélection des objets.
-La contrainte \eqref{eq_ct2} définit le domaine des variables de décisions.
+\subsection{Vocabulaire}
 
 
-\section{Algorithmes de résolution}
+
+\section{Algorithmes de décodage}
 \label{sec:algo}
 
 Pour écrire des algorithmes, le paquetage suivant est très utile : \url{http://tug.ctan.org/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf}  
@@ -133,7 +144,8 @@ C'est la fin.
 
 %\clearpage % à utiliser pour afficher la biblographie sur une nouvelle page
 % References
-\printbibliography
+
+%\printbibliography
 
 
 \end{document}
