@@ -33,6 +33,9 @@
 %Déclaration d'un nouvel opérateur
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
+%bib pour les matrices
+\usepackage{amsmath}
+\usepackage{arydshln}
 
 
 \begin{document}
@@ -99,6 +102,55 @@ Dans la suite du document, la section \ref{sec:fabrication} présente la formali
 
 
 \section{Comment fabrique-t-on un code LDPC ?}
+Les codes LDPC ont été découverts par Gallager dans les années 60, mais il a proposé seulement une méthode générale pour construire des codes LDPC pseudo-aléatoire. \newline
+Les longs codes LDPC sont générés par des ordinateurs et leur décodage est complexe dû au manque de structure. Tanner , en 1981, a donné une nouvelle interprétation d'un point de vue graphique qui a contribué au décodage itératif. \newline
+La première construction algébrique et systématique de codes LDPC basée sur les géométries finies a été proposée par Lin,Kou et Fossorier dans les années 2000. \newline
+La construction et le décodage des codes LDPC peuvent être fait de plusieurs manières. Un code LDPC est caractérisé par sa matrice de parité. \newline
+\textbf{Définition des codes LDPC:} Un code LDPC régulier est défini comme l'espace nul d'une matrice de contrôle de parité H, qui a les propriétés suivantes: \newline
+(1) chaque ligne et colonne contient un nombre bien défini de 1
+(2) ce nombre là a une valeur petite en comparaison avec la longueur du code et avec le nombre de lignes de H. \newline
+La matrice H est une \textbf{matrice creuse}: elle a une faible densité de valeurs de 1. \newline
+Dans le cas où toutes les colonnes ou toutes les lignes de H n'ont pas le même poids, le code LDPC s'appelle \textbf{code LDPC irrégulier}. \newline
+
+\textbf{Construction des codes LDPC:} La construction d'un code LDPC binaires revient à attribuer un petit nombre de valeurs dans une matrice de zéros à 1. Plusieurs méthodes pour construire de bons codes LDPC peuvent être résumées en deux classes principales : \textbf{constructions aléatoires et structurelles}.
+La première classe est basée sur des géométries finies, alors que la deuxième méthode des basée sur des matrices de permutation circulantes. \newline
+Dans ce travail, on va mettre l'accent sur la deuxième catégorie. \newline
+\subsection{Construction des codes LDPC de Gallager}
+Afin de construire la matrice de parité \textbf{H} d'un code LDPC de Gallager, il faut d'abord construire une sous matrice \textbf{$H_i$} ayant un poids de colonnes égal à 1 et un poids de lignes $\gamma$. Ensuite on doit trouver des permutations de colonnes de cette sous-matrice afin de former les autres sous-matrices avec lesquels on forme la \textbf{matrice de Gallager} de la manière suivante :
+$$H=
+\begin{bmatrix}
+  H_1 \\
+  H_2 \\
+  H_3 \\
+  \vdots \\
+  H_7
+\end{bmatrix}
+\quad
+$$
+\newline
+Lorsqu'on choisit les permutations de colonnes des sous-matrices il faut faire attention à garder une bonne distance minimale de la matrice de parité \textbf{H}.
+\subsection{Exemple de construction de Gallager}
+Les lignes de contrôle de parité des matrices de Gallager sont divisées en ensemble $w_c$ avec $\frac{M}{w_r}$ lignes dans chaque série. Le premier ensemble de lignes contient $w_r$ nombre de '1' consécutifs ordonnés de gauche à droite à travers les colonnes, ce qui veut dire que pour i $\leq$$\frac{M}{w_r}$, la i\up{ème} ligne n'est pas nulle de la ((i-1)+1\up{ème}) jusqu'à la i$w_r$\up{ème} colonne). \newline
+Par conséquent, toutes les colonnes de \textbf{H} comportent un seul '1' dans chacun des ensembles $w_c$. \newline \newline
+\textbf{Exemple:} Une matrice de controle de parité régulière(Gallager) tels que : M=10 (colonnes), $w_c$=3, $w_r$= 5\newline
+
+$$H=
+\begin{bmatrix}
+  1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\
+  \hdashline
+  1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
+  0 & 1 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 \\
+  \hdashline
+  1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 \\
+  0 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 1 & 0 
+  
+\end{bmatrix}
+\quad
+$$
+
+\section{Graphe de Tanner}
+
 \label{sec:fabrication}
 
 \subsection{Vocabulaire}
