@@ -36,7 +36,7 @@
 %bib pour les matrices
 \usepackage{amsmath}
 \usepackage{arydshln}
-
+\usepackage{amsfonts}
 
 \begin{document}
 
@@ -91,17 +91,92 @@ le mot reçu par Bob sera noté y. Par exemple, si Bob reçoit
     \hspace{5cm}\textbf{y=01110110}
 \end{tabbing}
 Il peut constater qu'une erreur, au moins, s'est produite. Il peut dire que l'erreur est soit sur le quatrième ou le huitième bit.
+
+
 \subsubsection{Code carré}
-\subsubsection{Code de Hamming}
+On suppose que Alice veut transmettre le mot de quatre bits, \textbf{m=$x_1$$x_2$$x_3$$x_4$}. Pour cela, elle l'écrit dans un carré de la façon suivante \newline
+\begin{tabbing}
+  \hspace{5cm} $x_1$ $x_2$ \\
+  \hspace{5cm} $x_3$ $x_4$
+\end{tabbing}
+Elle rajoute ensuite les bits, dits de parité, $p_1$,$p_2$,$p_3$,$p_4$ de sorte qu'il y ait un nombre pair de 1 sur chaque ligne et chaque colonne. \newline
+La somme sur chaque ligne et chaque colonne est 0 modulo 2. \newline
+Le code sera affiché de cette façon :
+\begin{tabbing}
+  \hspace{5cm} $x_1$ $x_2$ $p_1$ \\
+  \hspace{5cm} $x_3$ $x_4$ $p_2$ \\
+  \hspace{5cm} $p_3$ $p_4$
+\end{tabbing}
+Le mot codé envoyé par Alice est : 
+\begin{tabbing}
+  \hspace{5cm}\textbf{c=$x_1$$x_2$$x_3$$x_4$$p_1$$p_2$$p_3$$p_4$}
+\end{tabbing}
+On prend l'exemple suivant : \textbf{m=0011}, la première étape est :
+\begin{tabbing}
+  \hspace{5cm}\textbf{0 0} \\
+  \hspace{5cm}\textbf{1 1}
+\end{tabbing}
+En rajoutant les bits de parité, on obtient
+\begin{tabbing}
+  \hspace{5cm}\textbf{0 0 0}\\
+  \hspace{5cm}\textbf{1 1 0 }\\
+  \hspace{5cm}\textbf{1 1}
+\end{tabbing}
+Le mot codé est donc \textbf{c=00110011}
+
+
+
+
+
+\subsubsection{Code linéaire}
+\textbf{Définition:} Soient $\mathbb{F_q}$ un corps fini à q éléments, n$\geq$1 un entier. On dit que C $\subset$ $\mathbb{F_q}^n$ est un code linéaire si C est un sous-espace vectoriel de $\mathbb{F_q}^n$. Comme tout espace vectoriel, C a une dimension k. \newline
+La construction de ce type de code est : $\phi$: $\mathbb{F_q}^k$ $\to$ $\mathbb{F_q}^n$. D'où C=Im$\phi$ est un sous espace-vectoriel de $\mathbb{F_q}^n$, et par le théorème du rang dimC = k. \newline
+\textbf{Exemple de code linéaire:} Le code carré. 
+
 \subsection{Matrice de parité}
 \subsection{Matrice génératrice}
+\textbf{Définition d'une matrice génératrice:} Soit C $\subset$ $\mathbb{F_q}^n$ un code linéaire de dimension k. Une matrice G dont les lignes forment une forme de C s'appelle \textbf{matrice génératrice} de C. Elle aura donc k lignes et n colonnes. \newline
+\textbf{Exemple:} \textbf{Le code carré:}On rappelle que c'est l'image de l'application linéaire injective \newline 
+ 
+$\begin{array}{cccc}
+  \phi :  \mathcal{F}_2^4 \to  \mathcal{F}_2^8 \cr
+(x_1,x_2,x_3,x_4) \mapsto (x_1,x_2,x_3,x_4,x_1+x_2,x_3+x_4,x_1+x_3,x_2+x_4)
+\end{array}$
+\newline
+Une base de l'image est l'image d'une base. Par exemple l'image de la base  canonique. \newline
+Donc $\phi(1000)$ = \textbf{10001010} \newline
+$\phi(0100)$ = \textbf{01001001} . \newline
+De même pour $\phi(0010)$=\textbf{00100110} \newline
+Et aussi $\phi(0001)$ = \textbf{00010101} \newline
+On obtient donc une matrice génératrice
+$$G=
+\begin{pmatrix}
+  1 & 0 & 0 & 0 & 1 & 0 & 1 & 0  \\
+  0 & 1 & 0 & 0 & 1 & 0 & 0 & 1  \\
+  0 & 0 & 1 & 0 & 0 & 1 & 1 & 0  \\
+  0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 
+  
+  
+\end{pmatrix}
+\quad
+$$
+
 \subsection{Syndrome}
+Soient C un code linéaire et H une matrice de contrôle de C. Un mot x de C est transmis. y est le mot reçu. \newline
+On pose r = y - x l'erreur de transmission. Ce qui implique que y = r + x \newline
+On a donc:
+\begin{tabbing}
+  \hspace{5cm} H$~^ty$ = H$~^t(x + r)$= H$~^tx$ + H$~^tr$  = H$~^tr$ 
+\end{tabbing}
+car H$~^tx$ =0 vu que x est un mot de C.
+Donc la méthode de décodage par syndrome permet de repèrer les indices érronés dans un code reçu à l'aide de la matrice de contrôle.
 
 \vspace{0.8cm}
 Dans la suite du document, la section \ref{sec:fabrication} présente la formalisation du problème.
 
 
 \section{Comment fabrique-t-on un code LDPC ?}
+\label{sec:fabrication}
 Les codes LDPC ont été découverts par Gallager dans les années 60, mais il a proposé seulement une méthode générale pour construire des codes LDPC pseudo-aléatoire. \newline
 Les longs codes LDPC sont générés par des ordinateurs et leur décodage est complexe dû au manque de structure. Tanner , en 1981, a donné une nouvelle interprétation d'un point de vue graphique qui a contribué au décodage itératif. \newline
 La première construction algébrique et systématique de codes LDPC basée sur les géométries finies a été proposée par Lin,Kou et Fossorier dans les années 2000. \newline
@@ -151,7 +226,7 @@ $$
 
 \section{Graphe de Tanner}
 
-\label{sec:fabrication}
+
 
 \subsection{Vocabulaire}
 
