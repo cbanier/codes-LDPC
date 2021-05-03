@@ -73,6 +73,7 @@ def listOfRandomIndOne(weight,n):
 # Détermine la taille de la matrice pour un poids de
 # ligne donnée
 def determineSizeForGallager(weight_row):
+    # init
     i , j = 5 , 6
     while i < weight_row:
         i+=1
@@ -81,3 +82,10 @@ def determineSizeForGallager(weight_row):
         return i*j
     else:
         raise ValueError
+
+def listCounter(elem,L):
+    cpt = 0
+    for i in L:
+        if i == elem:
+            cpt+=1
+    return cpt
