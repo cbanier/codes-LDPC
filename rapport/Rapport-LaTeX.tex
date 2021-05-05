@@ -133,7 +133,6 @@ Le mot codé est donc \textbf{c=00110011}
 La construction de ce type de code est : $\phi$: $\mathbb{F_q}^k$ $\to$ $\mathbb{F_q}^n$. D'où C=Im$\phi$ est un sous espace-vectoriel de $\mathbb{F_q}^n$, et par le théorème du rang dimC = k. \newline
 \textbf{Exemple de code linéaire:} Le code carré. 
 
-\subsection{Matrice de parité}
 \subsection{Matrice génératrice}
 \textbf{Définition d'une matrice génératrice:} Soit C $\subset$ $\mathbb{F_q}^n$ un code linéaire de dimension k. Une matrice G dont les lignes forment une forme de C s'appelle \textbf{matrice génératrice} de C. Elle aura donc k lignes et n colonnes. \newline
 \textbf{Exemple:} \textbf{Le code carré:}On rappelle que c'est l'image de l'application linéaire injective \newline 
@@ -225,7 +224,52 @@ $$H=
 $$
 
 \section{Graphe de Tanner}
+Dans la théorie du code , un \textbf{graphe de Tanner}, nommé après Michael Tanner , est un graphe biparti utilisé pour indiquer des contraintes ou des équations spécifiques aux codes correcteurs d'erreurs. Dans cette théorie, les graphes de Tanner sont utilisés pour créer des codes longs à partir de codes plus courts. Ce graphe est utilisé de manière intensive dans le codage et le décodage. \newline
+\begin{tabbing}
+  Le \textbf{graphe de Tanner} se compose en : \\
+  \hspace{2cm}\textbf{Noeuds de variables:} associés aux bits du mot de code\\
+  \hspace{2cm}\textbf{Noeuds de parité:} associés aux équations de parité\\
+  \hspace{2cm}\textbf{Branches:} lien entre noeuds de variables et noeuds de parité. Un noeud de variable n est connecté au noeud de parité m si $h_mn$ = 1 dans la matrice de parité H.
+\end{tabbing}
+\textbf{Exemple: Graphe de Tanner du code de Hamming} \newline
+Soit la matrice de Parité : \newline
+$$H=
+\begin{pmatrix}
+  1 & 0 & 1 & 0 & 1 & 0 & 1 \\
+  0 & 1 & 1 & 0 & 0 & 1 & 1  \\
+  
+  0 & 0 & 0 & 1 & 1 & 1 & 1  
+  
+  
+\end{pmatrix}
+\quad
+$$
+Les coefficients $H_{11}$, $H_{13}$, $H_{15}$ et $H_{17}$ sont égaux à 1 donc le noeud $c_1$ est relié aux noeuds $v_1$, $v_3$, $v_5$ et $v_7$ . \newline
+Les coefficients $H_{22}$, $H_{23}$, $H_{26}$ et $H_{27}$ sont égaux à 1 donc le noeud $c_2$ est relié aux noeuds $v_2$, $v_3$, $v_6$ et $v_7$ . \newline
+De même, Les coefficients $H_{34}$, $H_{35}$, $H_{36}$ et $H_{37}$ sont égaux à 1 donc le noeud $c_3$ est relié aux noeuds $v_4$, $v_5$, $v_6$ et $v_7$ . \newline
 
+
+Le graphe de Tanner associé : \newline
+INSERER L'IMAGE 1  ICI \newline
+\textbf{Autre exemple:}
+Soit la matrice de Parité : \newline
+$$H=
+\begin{pmatrix}
+  1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 \\
+  
+  0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 \\
+  0 & 0 & 0 & 1 & 0 & 0 & 1 & 1 
+  
+  
+\end{pmatrix}
+\quad
+$$
+Le graphe biparti de Tanner associé : \newline
+
+Inserer l'image 2 ici !! \newline
+
+Le graphe de Tanner est utilisé comme support pour la plupart des algorithmes de décodage. Le principe principal d'un algorithme de décodage utilisant cette représentation est de considérer chaque branche du graphe comme un message d'un noeud $c_j$ vers un noeud $v_i$ et réciproquement.
 
 
 \subsection{Vocabulaire}
