@@ -67,6 +67,18 @@ ainsi qu'une matrice de contrôle qui répond à des conditions bien spécifique
 détaillé de décodage LDPC. La section \ref{sec:exp} est dédiée aux expériences pratiques qu'on a effectué durant l'implémentation 
 de l'algorithme. Enfin, la section \ref{sec:conclusion} sera notre conclusion sur le projet.
 
+\subsection{Robert Gray Gallager}
+Robert Gray Gallager né en 1931 est un ingénieur américain en éléctricité qui consacré sa vie à travailler dans la théorie de l'information et les réseaux de communication. \newline
+Gallager a reçu son Bachelor of Science Electrical Engineering (BSEE) degree de l'université de Pennsylvanie en 1953. Durant cette époque, il était membre du \textbf{laboratoire téléphonique Bell} puis il a servi pour l'une des branches de l'armée des Etats-Unis qui crée et gère les communications et les systèmes d'information qui est le \textbf{Corps des transmissions de l'armée des Etats-Unis (USASC)}. En 1957, il a décroché sont Master en Sciences (S.M) et en 1960, il est devenu docteur en sciences spécialisé en ingénierie éléctrique. \newline
+Sa thèse de doctorat portait sur les codes de contrôle de parité de basse densité (LDPC) qui a été publié comme un travail d'écriture spécialisé (Monographie) par la presse universitaire de Massachusetts Institute of Technology (MIT) en 1963. Ces \textbf{codes LDPC} parfois appelés \textbf{codes Gallager} sont restés utiles pendant plus de 50 ans. \newline
+Pendant les années 70, Gallager a déplacé son viseur sur les réseaux de données, les algorithmes distribués et les techniques d'accès aléatoire. Dans ce cadre, il a écrit \textbf{Réseaux de données, Pentice Hall}, publié en 1988, avec la deuxième édition en 1992, co-écrite avec \textbf{Dimitri Bertsekas} qui est un mathématicien, ingénieur éléctricien et informaticien qui a contribué à fournir une conception pour ce domaine. \newline
+Quelques années après, la passion de Gallager par la théorie de l'information est revenue, il a misé beaucoup d'énergie sur le thème de la communication sans fil, les réseaux optiques et les processus stochastiques. Il a écrit le \textbf{manuel de 1996, Processus stochastiques discrets}.\newline
+Durant sa carrière, Gallager était \textbf{président de la Société de théorie de l'information IEEE} en 1971, membre de son conseil de gouverneurs 1965-1972 et de nouveau 1979-1988. Il a servi en tant que rédacteur en chef adjoint pour le codage au sein de \textbf{l'IEEE Transactions on Information Theory} pendant la période 1963-1964 et en tant que rédacteur associé pour les communications informatiques de 1977 à 1980. \newline
+En tant que professeur, il a reçu le \textbf{MIT Graduate Student Council Teaching Award} en 1993 et le \textbf{Prix du Japon} en 2020 comme une récompense à cette carrière embellie de beaucoup de succès et d'encadrement d'étudiants qui sont maintenant devenus eux-mêmes des chercheurs. \newline
+Dans ce travail, on va s'intéresser aux travaux de Gallager effectués sur le thème des codes LDPC (Low Density Parity Check). \newline
+ 
+
+
 \subsection{Codes correcteurs}
 Lors de la transmission d'une information , des erreurs peuvent se produire. Cette problématique de corrections des erreurs de transmission est très importante dans notre monde connecté, qu'il s'agisse des communications entre ordinateurs par internet, des conversations téléphoniques etc.. \newline
 Un code correcteur, souvent désigné par le sigle anglais ECC (Error-correcting code), est une technique de codage basée sur la redondance. \newline
@@ -135,6 +147,11 @@ La construction de ce type de code est : $\phi$: $\mathbb{F_q}^k$ $\to$ $\mathbb
 
 \subsection{Matrice génératrice}
 \textbf{Définition d'une matrice génératrice:} Soit C $\subset$ $\mathbb{F_q}^n$ un code linéaire de dimension k. Une matrice G dont les lignes forment une forme de C s'appelle \textbf{matrice génératrice} de C. Elle aura donc k lignes et n colonnes. \newline
+G est de la forme : 
+\begin{tabbing}
+  \hspace{3cm}G = ($\operatorname{Id}_{k}$.A)\\
+\end{tabbing}
+
 \textbf{Exemple:} \textbf{Le code carré:}On rappelle que c'est l'image de l'application linéaire injective \newline 
  
 $\begin{array}{cccc}
@@ -154,6 +171,54 @@ $$G=
   0 & 1 & 0 & 0 & 1 & 0 & 0 & 1  \\
   0 & 0 & 1 & 0 & 0 & 1 & 1 & 0  \\
   0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 
+  
+  
+\end{pmatrix}
+\quad
+$$
+\subsection{Matrice de contrôle}
+Une matrice de contrôle d'un code C est une matrice H de dimension n*(n-k) tel que :\newline
+\begin{tabbing}
+  \hspace{3cm}x$\in$ C $\iff$ H.{$~^tx$} = 0 \\
+  \end{tabbing}
+C'est une matrice d'une application linéaire surjective $\phi$ de \textbf{A} dans un espace vectoriel ayant pour noyau le code C. \newline
+$\Rightarrow$ L'ensemble d'arrivée de l'application linéaire $\phi$ associée à la matrice de contrôle est de dimension n-k (d'après le théorème du rang)\newline
+\textbf{Exemple de calcul de matrice de contrôle à partir de la matrice génératrice:} \newline
+Soit C le code linéaire qui a pour matrice génératrice
+$$G=
+\begin{pmatrix}
+  1 & 0 & 1 & 1 & 0 & 0 & 1 & 0  \\
+  0 & 1 & 1 & 1 & 0 & 0 & 0 & 1  \\
+  1 & 0 & 1 & 0 & 0 & 1 & 0 & 1  \\
+  0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 
+  
+  
+\end{pmatrix}
+\quad
+$$
+$\Rightarrow$ On échelonne et on réduit la matrice génératrice jusqu'à ce qu'on obtient une matrice de la forme suivante : \newline
+$$G'=
+\begin{pmatrix}
+  1 & 0 & 0 & 0 & 1 & 1 & 1 & 0  \\
+  0 & 1 & 0 & 0 & 1 & 1 & 0 & 1  \\
+  0 & 0 & 1 & 0 & 1 & 0 & 1 & 1  \\
+  0 & 0 & 0 & 1 & 0 & 1 & 1 & 1 
+  
+  
+\end{pmatrix}
+\quad
+$$
+\textbf{La règle qui s'applique à ce stade:} une matrice de contrôle de C est de la forme suivante \newline
+\begin{tabbing}
+  \hspace{3cm}H= (-$~^tA$.$\operatorname{Id}_{n-k}$)\\
+\end{tabbing}
+$\Rightarrow$ On applique donc cette règle et on obtient:
+$$H=
+\begin{pmatrix}
+  1 & 1 & 1 & 0 & 1 & 0 & 0 & 0  \\
+  1 & 1 & 0 & 1 & 0 & 1 & 0 & 0  \\
+  1 & 0 & 1 & 1 & 0 & 0 & 1 & 0  \\
+  0 & 1 & 1 & 1 & 0 & 0 & 0 & 1 
   
   
 \end{pmatrix}
