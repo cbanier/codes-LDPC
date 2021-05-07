@@ -70,7 +70,14 @@
 % IMPORTANT : A décommenter pour ajouter l'engagement de non plagiat au rapport.
 %\nonplagiat{Prenom1 Nom1}[Prenom2 Nom2][Prenom3 Nom3]
 %-----------------------------------------------------
-
+\section{Sujet}
+Dans la théorie des codes correcteurs d’erreurs, les codes dits « Low Density Parity Check » (LDPC) occupent une place très importante. 
+Ces codes sont définis par des équations de petit poids, que l’on peut donc regrouper dans une matrice de parité creuse, d’où leur nom. 
+Ils ont été proposés dans les années 1960, et ont donné lieu à des développements extrêmement variés à partir des années 1990. Des 
+variantes des codes LDPC trouvent également des applications en cryptographie. Il s’agira de comprendre comment fabriquer des instances 
+de tels codes, ainsi que leur décodage, qui dans sa variante la plus simple consiste en une décision majoritaire sur le nombre d’équations 
+non satisfaites par un mot de code erroné. On pratiquera un certain nombre d’expérimentations sur des exemples.
+\clearpage
 
 \section{Introduction}
 \label{sec:introduction}
@@ -94,7 +101,7 @@ Avant tout, nous allons introduire la notion de code correcteur d'erreur(s).\vsp
 \section{Codes correcteurs}
 Lors de la transmission d'une information, des erreurs peuvent se produirent. Cette problématique de correction des erreurs de transmission est 
 très importante dans notre monde connecté, qu'il s'agisse des communications entre ordinateurs par internet, des conversations téléphoniques etc...\newline
-Un code correcteur, souvent désigné par le sigle anglais ECC (Error-correcting code), est une technique de codage basée sur la redondance.\newline
+Un code correcteur, souvent désigné par le sigle anglais ECC (Error-correcting code), est une technique de codage basée sur la redondance.
 Un code est une application injective $\Phi:\{0,1\}^k \rightarrow \{0,1\}^n $.\newline
 Le paramètre k est appelé la \textbf{dimension} du code $\Phi$ et le paramètre n est appelé la \textbf{longueur} du code : on dit que $\Phi$ est un 
 code de paramètres (k,n).\vspace{0.4cm}\newline
@@ -104,65 +111,17 @@ On appelle \textbf{distance minimale} de $\Phi$ et on note $d_c$ la plus petite 
 Ainsi, on a \textbf{$e_c = $} $\frac{d_c-1}{2}$\vspace{0.4cm}\newline
 Parmi les exemples de codes correcteurs, on peut citer les codes de répétition, les codes carré et on encore les codes LDPC.
 %-----------------------------------------------------
-\subsection{Code de répétition}
-Le code de répétition se résume par transmettre le message deux fois pour s'assurer contre les erreurs. Par exemple, Alice veut transmettre un mot de quatre bits à Bob. 
-\begin{tabbing}
-\hspace{5cm}\textbf{m=0111} \newline
-\end{tabbing}
-Elle va donc envoyer le mot codé
-\begin{tabbing}
-    \hspace{5cm}\textbf{c=01110111}
-\end{tabbing}
-le mot reçu par Bob sera noté y. Par exemple, si Bob reçoit
-\begin{tabbing}
-    \hspace{5cm}\textbf{y=01110110}
-\end{tabbing}
-Il peut constater qu'une erreur, au moins, s'est produite. Il peut dire que l'erreur est soit sur le quatrième ou le huitième bit.
-%-----------------------------------------------------
-\subsection{Code carré}
-On suppose que Alice veut transmettre le mot de quatre bits, \textbf{m=$x_1$$x_2$$x_3$$x_4$}. Pour cela, elle l'écrit dans un carré de la façon suivante \newline
-\begin{tabbing}
-  \hspace{5cm} $x_1$ $x_2$ \\
-  \hspace{5cm} $x_3$ $x_4$
-\end{tabbing}
-Elle rajoute ensuite les bits, dits de parité, $p_1$,$p_2$,$p_3$,$p_4$ de sorte qu'il y ait un nombre pair de 1 sur chaque ligne et chaque colonne. \newline
-La somme sur chaque ligne et chaque colonne est 0 modulo 2. \newline
-Le code sera affiché de cette façon :
-\begin{tabbing}
-  \hspace{5cm} $x_1$ $x_2$ $p_1$ \\
-  \hspace{5cm} $x_3$ $x_4$ $p_2$ \\
-  \hspace{5cm} $p_3$ $p_4$
-\end{tabbing}
-Le mot codé envoyé par Alice est : 
-\begin{tabbing}
-  \hspace{5cm}\textbf{c=$x_1$$x_2$$x_3$$x_4$$p_1$$p_2$$p_3$$p_4$}
-\end{tabbing}
-On prend l'exemple suivant : \textbf{m=0011}, la première étape est :
-\begin{tabbing}
-  \hspace{5cm}\textbf{0 0} \\
-  \hspace{5cm}\textbf{1 1}
-\end{tabbing}
-En rajoutant les bits de parité, on obtient
-\begin{tabbing}
-  \hspace{5cm}\textbf{0 0 0}\\
-  \hspace{5cm}\textbf{1 1 0 }\\
-  \hspace{5cm}\textbf{1 1}
-\end{tabbing}
-Le mot codé est donc \textbf{c=00110011}
-%-----------------------------------------------------
 \subsection{Code linéaire}
 \textbf{Définition:} Soient $\mathbb{F_q}$ un corps fini à q éléments, n$\geq$1 un entier. On dit que C $\subset$ $\mathbb{F_q}^n$ est un code linéaire si C est un sous-espace vectoriel de $\mathbb{F_q}^n$. Comme tout espace vectoriel, C a une dimension k. \newline
 La construction de ce type de code est : $\phi$: $\mathbb{F_q}^k$ $\to$ $\mathbb{F_q}^n$. D'où C=Im$\phi$ est un sous espace-vectoriel de $\mathbb{F_q}^n$, et par le théorème du rang dimC = k. \newline
 \textbf{Exemple de code linéaire:} Le code carré. 
 %-----------------------------------------------------
 \subsection{Matrice génératrice}
-\textbf{Définition d'une matrice génératrice:} Soit C $\subset$ $\mathbb{F_q}^n$ un code linéaire de dimension k. Une matrice G dont les lignes forment une forme de C s'appelle \textbf{matrice génératrice} de C. Elle aura donc k lignes et n colonnes. \newline
-G est de la forme : 
-\begin{tabbing}
-  \hspace{3cm}G = ($\operatorname{Id}_{k}$.A)\\
-\end{tabbing}
-
-\textbf{Exemple:} \textbf{Le code carré:}On rappelle que c'est l'image de l'application linéaire injective \newline 
+\textbf{Définition d'une matrice génératrice:} Soit C $\subset$ $\mathbb{F_q}^n$ un code linéaire de dimension k. Une matrice G dont les lignes forment une forme de C s'appelle \textbf{matrice génératrice} de C. Elle aura donc k lignes et n colonnes.\vspace{0.3cm}\newline
+G est de la forme :
+\begin{center}
+  G = ($\operatorname{Id}_{k}$.A)
+\end{center}
  
 $\begin{array}{cccc}
   \phi :  \mathcal{F}_2^4 \to  \mathcal{F}_2^8 \cr
@@ -186,6 +145,7 @@ $$G=
 \end{pmatrix}
 \quad
 $$
+\clearpage
 %-----------------------------------------------------
 \subsection{Matrice de contrôle}
 Une matrice de contrôle d'un code C est une matrice H de dimension n*(n-k) tel que :\newline
@@ -295,7 +255,7 @@ Lorsqu'on choisit les permutations de colonnes des sous-matrices il faut faire a
 \clearpage
 \subsection{Exemple de construction de Gallager}
 Les lignes de contrôle de parité des matrices de Gallager sont divisées en ensemble $w_c$ avec $\frac{M}{w_r}$ lignes dans chaque série. Le premier ensemble de lignes contient $w_r$ nombre de '1' consécutifs ordonnés de gauche à droite à travers les colonnes, ce qui veut dire que pour i $\leq$$\frac{M}{w_r}$, la i\up{ème} ligne n'est pas nulle de la ((i-1)+1\up{ème}) jusqu'à la i$w_r$\up{ème} colonne). \newline
-Par conséquent, toutes les colonnes de \textbf{H} comportent un seul '1' dans chacun des ensembles $w_c$.\vspace{0.4cm}\newline
+Par conséquent, toutes les colonnes de \textbf{H} comportent un seul $1$ dans chacun des ensembles $w_c$.\vspace{0.4cm}\newline
 \textbf{Exemple:} Une matrice de controle de parité régulière(Gallager) tels que : M=10 (colonnes), $w_c$=3, $w_r$= 5\vspace{0.4cm}\newline
 $$H=
 \begin{bmatrix}
@@ -447,7 +407,7 @@ si le poids ne diminue plus, on ne peut pas décoder le code LDPC. Nous verrons 
 \section{Expérimentations et résultats}
 \label{sec:exp}
 
-Nous avons réaliser plusieurs types d'expériences. Nous avons découvert que plus la taille des matrices est grandes, 
+Nous avons réaliser plusieurs types d'expériences. Nous avons découvert que plus la taille des matrices est grande, 
 plus l'algorithme de décodage fonctionne. En effet, Pour livrer nos résultats, nous avons choisit des matrices de longueur 
 $1000$ et $2000$.
 
@@ -460,39 +420,68 @@ La méthode adopter est la suivante:
 \begin{enumerate}
   \item[1.] Construire une matrice dont les colonnes ont un certain poids.
   \item[2.] Observer combien de vecteurs erreurs d'un certain poids, nous arrivons à retrouver grâce à notre algorithme de décodage classique.
-  \item[3.] Essayer d'optimiser l'algorithme de décodage en supprimant les position parasites et donc essayer de décoder plus de vecteurs erreurs.
+  \item[3.] Essayer d'optimiser l'algorithme de décodage en supprimant les position parasites et donc essayer de décoder plus de vecteurs erreurs (ou non).
   \item[4.] Comparer les résultats des deux algorithmes.
 \end{enumerate}
 
 \textsc{\textbf{\underline{Remarque :}}} Une position parasite est une colonne de H qui satisfait la condition\newline $\omega(S + h_{i}) \le \omega(S)(1)$ mais qui n'est pas une 
-position érroné. En outre, on va durcir la condition $(1)$ de façon a ignorer ces positions. Pour cela, on essaiera de récupérer les colonnes de H qui font baisser le
+position érronée. En outre, on va durcir la condition $(1)$ de façon a ignorer ces positions. Pour cela, on essaiera de récupérer les colonnes de H qui font baisser le
 syndrome. ($\omega(S + h_{i}) < \omega(S)$ ou encore $\omega(S + h_{i}) < \omega(S) - 1$, par exemple)
 
 \subsection{$n = 1000$}
-Nous réalisons 
+Nous réalisons une série d'expériences sur des matrices de dimension 500 par 1000. Pour ce faire, on regarder combien de vecteurs erreurs
+sommes-nous capable de décoder. On se définit un échantillions de 200 vecteurs erreurs puis on calcul la probabilité de décodage en fonction d'un type de matrice donnée.
+En effet, on définit une matrice avec un certain poids sur chaque colonne puis on appelle l'algorithme de décodage.\vspace{0.4cm}\newline
 
-\textbf{\underline{Nota bene:}} 
+La Table \ref{table:res1} présente un résumé des résultats de nos expérimentations pour $n=1000$ à l'aide de la fonction
+\textit{decode\_LDPC} (étape 2 de la démarche expérimental). 
+
+La Table \ref{table:res2} présente un résumé des résultats de nos expérimentations pour $n=1000$ à l'aide de la fonction
+\textit{decode\_LDPC\_strict} (étape 3 de la démarche expérimental). 
+Pour la fonction \textit{decode\_LDPC\_strict}, nous avons choisit d'essayer de faire baisser le poids du syndrome de 2 à la première itération puis de 1 sur les 
+deux suivantes. Ensuite, l'algorithme se déroule sans contrainte sur les 22 autres itérations.
+
+\vspace{0.4cm}
+On peut observer plusieurs choses. Premièrement, sur la table \ref{table:res1} on arrive à décoder les 200 vecteurs erreurs de poids 
+8 sur une matrice dont les colonnes sont de poids 11. Sur cette même colonne, les vecteurs erreurs de poids 7 ne sont pas tous décoder (99\% de décodage).
+On peut expliquer cela à cause de l'aléatoire, en effet, nous générons des vecteurs erreurs aléatoirement et des matrices aléatoirement aussi.
+Donc il est possible d'obserser ce type de phénomène puisque les positions des 1 ne vont pas s'intersecter. De ce faite,
+le poids du syndrome ne va pas diminuer mais augmenter.\newline
+Étant donné que nous décodons le plus de vecteurs dont les colonnes sont de poids 11, ce dernier semble être le poids optimale
+pour $n = 1000$. Lorqu'on observe la table \ref{table:res2} les résultats sont convainquants jusqu'à des poids 6 sur les vecteurs erreurs.
+Mais l'optimale semble se situé entre des poids de colonnes qui se situent entre 10 et 12 inclus. On ne décode pas autant de vecteurs erreurs
+car en 25 itérations, nous ne parvenons pas à trouver toutes les solutions.
+\clearpage
+\underline{Deux explications possible :}
+\begin{enumerate}
+  \item On diminue trop le poids du syndrome et on oublie des positions
+  \item Ou, on exécute pas assez d'itération
+\end{enumerate}
+
+Il est difficile de répondre directement à la première explication, cependant on peut lancer nos tests sur plus d'itérations par exemples.
+Nous faisons 50. On arrive à observer des résultats similaires que pour 25 itérations. On ne manipule jamais les mêmes matrices ni les même échantillions de vecteurs erreurs
+puisque nous générons tout aléatoirement. Parfois, on arrive à décoder les 200 vecteurs erreurs de poids 7 mais le plus souvent non.
+On peut donc en déduire expérimentalement que l'on diminue trop le poids du syndrome.\vspace{0.4cm}\newline
+
+\underline{Observations supplémentaire:} L'algortime strict nous permet de décoder beacoup plus de vecteurs erreurs que le premier algorithme. On a fait le choit d'arrêter nos algorithmes
+lorque la dernière probabilité de déocdage calculé est inférieur ou égal à 0.8. En effet, nous avons pue observer que dans tous les cas, si on la probabilité chute drastiquement
+après ce palier donc nous avons juger ces résulats non pertinent. Donc on peut observer que sur la table \ref{table:res1} les résultats chute d'un coups après que la probabilité de décodage soit 
+résonnable. On peut observer ce phénomène sur la colonne des poids 14 par exemple. Si on observe cette même colonne dans la \ref{table:res2} on peut voir que les résultats sont plus lisses.
+
+\subsection{$n = 2000$}
+La Table \ref{table:res3} présente un résumé des résultats de nos expérimentations pour $n=2000$ à l'aide de la fonction
+\textit{decode\_LDPC\_strict}.\vspace{0.4cm}\newline
+Les expériences sur les matrices de dimension $1000$ par $2000$ sont gourmandes en temps et en ressource. La création de la matrice n'est pas instantanée. Par exemple, créer une matrice ayant un poids de 9 sur les colonnes, environ 15 secondes sont nécessaires. 
+Ainsi, nous allons présenter 
+les résultats de \textit{decode\_LDPC\_strict} sur un échantillions de 25 vecteurs erreurs. Et sur 25 itérations maximale de décodage.\vspace{0.4cm}\newline
+
+On observe que l'algorithme de décodage fonctionne bien, encore mieux que lorsque $n=1000$. On arrive à décoder jusqu'à 25 vecteurs erreurs de poids 21. Ici, encore, on observe le même phénomène qui est 
+dû à l'aléatoire. Pour ce poids de colonne, on n'observe pas que des probabilités certaines jusqu'au poids 21, cependant il porte à croire que 9 est le poids optimale pour 
+$n = 2000$. En effet, c'est le poids de colonne qui permet de décoder le plus de vecteurs erreurs d'un poids élévé.\vspace{0.4cm}\newline
 
 
+Dans l'ensemble, on a observé que supprimer les position parasites était beaucoup plus éfficasse pour $n=2000$. En effet, on arrive à gagner en terme de capacité de décodage.
 
-La Table \ref{table:resultats} présente un résumé des résultats de nos expérimentations. 
-
-\begin{table}[htbp]
-  \centering
-  \caption{Comparaison des différentes méthodes}
-  \label{table:resultats}
-    \begin{tabular}{l|rrrrr}
-    \hline
-    \multirow{2}[0]{*}{Algorithme}&  \multicolumn{2}{c}{Temps CPU (ms)}  & \multicolumn{2}{c}{Gap MS} &  \multirow{2}[0]{*}{\#Données MS}  \\
-        & \multicolumn{1}{c}{Moyenne}   & \multicolumn{1}{c}{Ecart type} & \multicolumn{1}{c}{Moyenne} & \multicolumn{1}{c}{Ecart type} & \\
-          \hline
-    Heuristique PPV & 29 & 96 & 8.4\% & \textbf{36\%} &  6/38\\
-    Heuristique MI & 16984 & 78093  & \textbf{1.3\%} & 42\% &   \textbf{30/38} \\
-    \hline
-    \end{tabular}%
-\end{table}%
-
-\FloatBarrier
 \clearpage
 %-----------------------------------------------------
 %-----------------------------------------------------
@@ -512,6 +501,263 @@ C'est la fin.
 
 %\printbibliography
 \section{Annexe}
+\begin{table}[htbp]
+  \centering
+  \caption{Probabilité de décodage sur 200 vecteurs erreurs d'un certain poids en fonction du poids des colonnes d'une matrice de code LDPC}
+  \label{table:res1}
+  \vspace{0.3cm}\hspace{4.5cm} Poids des colonnes\vspace{0.1cm}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    Poids des vecteurs erreurs &3 &4 &5 &6 &7 &8 &9 &10 &11 \\
+    \hline
+    1	&0.915	&0.745	&1.0	&0.96	&0.99	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    2	&-	&-	&1.0	&-	&-	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    3	&-	&-	&1.0	&-	&-	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    4	&-	&-	&1.0	&-	&-	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    5	&-	&-	&1.0	&-	&-	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    6	&-	&-	&0.995	&-	&-	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    7	&-	&-	&1.0	&-	&-	&0.945	&1.0	&0.995	&0.99\\
+    \hline
+    8	&-	&-	&0.98	&-	&-	&0.74	&0.995	&0.825	&1.0 \\
+    \hline
+    9	&-	&-	&0.975	&-	&-	&-	&0.985	&0.55	&0.98 \\
+    \hline
+    10	&-	&-	&0.95	&-	&-	&-	&0.955	&-	&0.915 \\
+    \hline
+    11 	&-	&-	&0.925	&-	&-	&-	&0.885	&-	&0.725 \\
+    \hline
+    12	&-	&-	&0.87	&-	&-	&-	&0.75	&-	&- \\
+    \hline
+    13	&-	&-	&0.775	&-	&-	&-	&-	&-	&- \\
+    \hline
+    Temps CPU (s) &263	&560	&3458	&203	&131	&3050	&3318	&3176	&2748\\
+    \hline
+    - &- &- &- &- &- &- &- &- &-\\
+    \hline
+    Poids des vecteurs erreurs &\phantom &12 &13 &14 &15 &16 &17 &18 &19 \\
+    \hline
+    1 &\phantom &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    2 &\phantom&1.0	&1.0	&1.0 &1.0	&1.0	&1.0	&1.0	&1.0\\
+    \hline
+    3 &\phantom &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    4 &\phantom &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    5 &\phantom &1.0	&1.0	&1.0	&0.995	&1.0	&0.995	&0.995	 &0.985 \\
+    \hline
+    6 &\phantom &1.0	&1.0	&1.0	&1.0	&1.0	&0.985	&0.985	&1.0 \\
+    \hline
+    7 &\phantom &0.985	&1.0	&0.99	&0.995	&0.955	&0.97	&0.92	&0.995 \\
+    \hline
+    8 &\phantom &0.905	&0.985	&0.8	&0.99	&0.685	&0.955	&0.605	&0.93 \\
+    \hline
+    9 &\phantom &0.51	&0.97	&0.395	&0.94	&-	&0.895	&-	&0.645 \\
+    \hline
+    10 &\phantom &-	&0.855	&-	&0.76	&-	&0.8	&-	&- \\
+    \hline
+    11 &\phantom  &-	&0.57	&-	&-	&-	&0.58	&-	&- \\
+    \hline
+    12 &\phantom &-	&-	&-	&-	&-	&-	&-	&- \\
+    \hline
+    13 &\phantom &-	&-	&-	&-	&-	&-	&-	&- \\
+    \hline
+    Temps CPU (s) &\phantom &4246	&5099	&4169	&2204	&1968	&4503	&2317	&1997\\
+    \hline
+  \end{tabular}
+\end{table}%
+\clearpage
+\begin{table}[htbp]
+  \centering
+  \caption{Probabilité de décodage sur 200 vecteurs erreurs d'un certain poids en fonction du poids des colonnes d'une matrice de code LDPC}
+  \vspace{0.3cm}\hspace{4.5cm} Poids des colonnes\vspace{0.1cm}
+  \label{table:res2}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+          \hline
+          Poids des vecteurs erreurs &3 &4 &5 &6 &7 &8 &9 &10 &11 \\
+          \hline
+          1 &1.0	&1.0	&1.0 &1.0	&1.0 &1.0	&1.0 &1.0 &1.0 \\
+          \hline
+          2 &1.0	&1.0	&1.0 &1.0	&1.0 &1.0	&1.0 &1.0 &1.0 \\
+          \hline
+          3 &0.97	&1.0 &0.99 &1.0 &1.0 &1.0 &0.995 &1.0 &1.0 \\
+          \hline
+          4 &0.895 &0.99 &0.99 &0.99 &1.0 &1.0 &1.0 &1.0 &0.99 \\
+          \hline
+          5	&0.835 &0.98 &0.965 &0.995 &0.99 &0.995 &0.99 &1.0 &0.99 \\
+          \hline
+          6	&0.725 &0.97 &0.91 &0.975 &0.95 &0.985 &0.985 &1.0 &0.99 \\
+          \hline
+          7	&- &0.945 &0.82 &0.96 &0.915 &0.98 &0.96 &0.975 &0.965 \\
+          \hline
+          8	&- &0.905 &0.81 &0.965 &0.865 &0.965 &0.925 &0.97 &0.915 \\
+          \hline
+          9	&- &0.86 &0.67 &0.905 &0.835 &0.925 &0.91 &0.955 &0.88 \\
+          \hline
+          10 &- &0.82 &- &0.885 &0.825 &0.9	&0.81	&0.93	&0.81 \\
+          \hline
+          11 &- &0.775 &-	&0.845 &0.635	&0.845 &0.705	&0.855 &0.725 \\
+          \hline
+          12 &- &- &- &0.785	&- &0.825 &- &0.82 &- \\
+          \hline
+          13 &- &- &- &- &- &0.69 &- &0.745	&- \\
+          \hline
+          Temps CPU (s) &890 &2082 &1405 &2035 &1475 &3694 &1457 &1953 &1661\\
+          \hline
+          - &- &- &- &- &- &- &- &- &-\\
+          \hline
+          Poids des vecteurs erreurs &\phantom &12 &13 &14 &15 &16 &17 &18 &19 \\
+          \hline
+          1 &\phantom &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+          \hline
+          2 &\phantom&1.0	&1.0	&1.0 &1.0	&1.0	&1.0	&1.0	&1.0\\
+          \hline
+          3 &\phantom &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+          \hline
+          4 &\phantom &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+          \hline
+          5 &\phantom &0.995	&0.995	&1.0	&1.0	&1.0	&0.995	&1.0	 &0.995 \\
+          \hline
+          6 &\phantom &1.0	&0.985 &1.0	&0.99	&0.995	&0.985	&0.995	&0.985 \\
+          \hline
+          7 &\phantom &0.995	&0.96	&0.99	&0.98	&0.99	&0.97	&0.98	&0.975 \\
+          \hline
+          8 &\phantom &0.985	&0.93	&0.98	&0.94	&0.945	&0.955	&0.95	&0.935 \\
+          \hline
+          9 &\phantom &0.95	&0.9	&0.965	&0.865	&0.9	&0.895	&0.935	&0.81 \\
+          \hline
+          10 &\phantom  &0.905	&0.83	&0.935	&0.78	&0.83	&0.8	&0.785	&0.7 \\
+          \hline
+          11 &\phantom  &0.85	&0.745	&0.855	&-	&0.655	&0.58	&-	&- \\
+          \hline
+          12 &\phantom &0.82	&-	&0.7	&-	&-	&-	&-	&- \\
+          \hline
+          13 &\phantom &0.625	&-	&-	&-	&-	&-	&-	&- \\
+          \hline
+          Temps CPU (s) &\phantom &2652 &1629	&3899 &1297	&1951	&1456	&1609	&1606\\
+          \hline
+  \end{tabular}
+\end{table}%
+
+\begin{table}[htbp]
+  \centering
+  \caption{Probabilité de décodage sur 25 vecteurs erreurs d'un certain poids en fonction du poids des colonnes d'une matrice de code LDPC (n=2000)}
+  \label{table:res3}
+  \vspace{0.1cm}\hspace{4.5cm} Poids des colonnes\vspace{0.1cm}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    Poids des vecteurs erreurs &3 &4 &5 &6 &7 &8 &9 &10 &11 &12\\
+    \hline
+    1	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 &1.0\\
+    \hline
+    2	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 &1.0\\
+    \hline
+    3	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 &1.0\\
+    \hline
+    4	&0.92	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 &1.0\\
+    \hline
+    5	&0.88	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 &1.0\\
+    \hline
+    6	&0.76	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 &1.0 \\
+    \hline
+    7	&-	&0.96	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    8	&-	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    9	&-	&0.92	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&0.96	&1.0 \\
+    \hline
+    10	&-	&1.0	&0.92	&0.96	&0.92	&0.96	&1.0	&1.0	&0.96	&0.96 \\
+    \hline
+    11	&-	&0.96	&0.88	&1.0	&0.96	&1.0	&1.0	&1.0	&1.0	&0.96 \\
+    \hline
+    12	&-	&0.8	&0.88	&0.96	&0.92	&0.96	&0.96	&1.0	&1.0	&1.0 \\
+    \hline
+    13	&-	&0.88	&0.76	&0.92	&0.92	&1.0	&1.0	&1.0	&0.92	&1.0 \\
+    \hline
+    14	&-	&0.72	&-	&0.88	&0.8	&0.92	&1.0	&0.96	&0.88	&1.0 \\
+    \hline
+    15	&-	&-	&-	&1.0	&0.76	&1.0	&0.92	&0.96	&0.8	&0.96 \\
+    \hline 
+    16	&-	&-	&-	&0.84	&-	&1.0	&1.0	&0.84	&0.92	&1.0 \\
+    \hline
+    17	&-	&-	&-	&0.76	&-	&0.96	&0.92	&0.88	&0.96	&0.88 \\
+    \hline 
+    18	&-	&-	&-	&-	&-	&0.92	&1.0	&0.88	&0.84	&0.84 \\
+    \hline
+    19	&-	&-	&-	&-	&-	&0.84	&0.96	&0.84	&0.8	&0.8 \\
+    \hline
+    20	&-	&-	&-	&-	&-	&0.92	&0.84	&0.76	&0.76	&0.88 \\
+    \hline
+    21	&-	&-	&-	&-	&-	&0.72	&1.0	&-	&-	&0.8 \\
+    \hline
+    22	&-	&-	&-	&-	&-	&-	&0.88	&-	&-	&0.72 \\
+    \hline
+    23	&-	&-	&-	&-	&-	&-	&0.8	&-	&-	&- \\
+    \hline
+    24	&-	&-	&-	&-	&-	&-	&0.72	&-	&-	&- \\
+    \hline
+    - &- &- &- &- &- &- &- &- &-\\
+    \hline
+    Poids des vecteurs erreurs &13 &14 &15 &16 &17 &18 &19 &20 &21 &22\\
+    \hline
+    1 &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    2 &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    3 &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    4 &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    5 &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    6 &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    7 &1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    8&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    9&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    10&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    11&1.0	&1.0	&1.0	&0.96	&1.0	&0.96	&1.0	&1.0	&1.0	&1.0 \\
+    \hline
+    12&1.0	&1.0	&0.96	&1.0	&1.0	&0.96	&1.0	&0.96	&1.0	&1.0 \\
+    \hline
+    13&1.0	&1.0	&1.0	&1.0	&1.0	&0.92	&0.96	&1.0	&1.0	&0.88 \\
+    \hline
+    14&1.0	&0.96	&0.96	&1.0	&1.0	&1.0	&1.0	&0.92	&0.96	&1.0 \\
+    \hline
+    15&0.96	&0.92	&1.0	&0.96	&1.0	&0.92	&1.0	&0.92	&0.96	&0.84 \\
+    \hline
+    16&1.0	&0.88	&1.0	&0.92	&1.0	&0.96	&0.96	&0.7	&0.84	&0.92 \\
+    \hline
+    17&1.0	&0.84	&1.0	&0.88	&0.84	&0.96	&0.96	&-	&0.56	&0.92 \\
+    \hline
+    18&0.96	&0.8	&0.84	&0.84	&0.88	&0.76	&0.48	&-	&-	&0.68 \\
+    \hline
+    19&0.88	&0.92	&0.88	&0.8	&0.64	&-	&-	&-	&-	&- \\
+    \hline
+    20&0.7	&0.88	&0.72	&0.84	&-	&-	&-	&-	&-	&- \\
+    \hline
+    21&-	&0.64	&-	&0.48	&-	&-	&-	&-	&-	&- \\
+    \hline
+    22&-	&-	&-	&-	&-	&-	&-	&-	&-	&- \\
+    \hline
+    23&-	&-	&-	&-	&-	&-	&-	&-	&-	&- \\
+    \hline
+    24&-	&-	&-	&-	&-	&-	&-	&-	&-	&- \\
+    \hline
+  \end{tabular}
+\end{table}%
+\clearpage
+\section{Implémentation}
 \label{sec:annexe}
 \underline{Fichier tools.py}
 \lstinputlisting[language=python]{tools.py}
