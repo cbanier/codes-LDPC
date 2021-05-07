@@ -236,8 +236,8 @@ La première classe de construction est basée sur des géométries finies, c'es
 permutations circulantes.\vspace{0.4cm}
 %-----------------------------------------------------
 \subsection{Construction des codes LDPC de Gallager}
-Afin de construire la matrice de parité \textbf{H} d'un code LDPC de Gallager, il faut d'abord construire une sous matrice \textbf{$H_i$} ayant un poids de colonnes égal à 
-1 et un poids de lignes $\gamma$. Ensuite on doit trouver des permutations de colonnes de cette sous-matrice afin de former les autres sous-matrices avec lesquels on forme 
+Afin de construire la matrice de parité \textbf{H} d'un code LDPC de Gallager, il faut d'abord construire une sous matrice \textbf{$H_i$} ayant un poids de colonne égal à 
+1 et un poids de ligne $\gamma$. Ensuite on doit trouver des permutations des colonnes de cette sous-matrice afin de former les autres sous-matrices avec lesquels on forme 
 la \textbf{matrice de Gallager} de la manière suivante :
 $$H=
 \begin{bmatrix}
@@ -254,7 +254,7 @@ Lorsqu'on choisit les permutations de colonnes des sous-matrices il faut faire a
 %-----------------------------------------------------
 \clearpage
 \subsection{Exemple de construction de Gallager}
-Les lignes de contrôle de parité des matrices de Gallager sont divisées en ensemble $w_c$ avec $\frac{M}{w_r}$ lignes dans chaque série. Le premier ensemble de lignes contient $w_r$ nombre de '1' consécutifs ordonnés de gauche à droite à travers les colonnes, ce qui veut dire que pour i $\leq$$\frac{M}{w_r}$, la i\up{ème} ligne n'est pas nulle de la ((i-1)+1\up{ème}) jusqu'à la i$w_r$\up{ème} colonne). \newline
+Les lignes de contrôle de parité des matrices de Gallager sont divisées en ensemble $w_c$ avec $\frac{M}{w_r}$ lignes dans chaque série. Le premier ensemble de lignes contient $w_r$ nombre de $1$ consécutif ordonné de gauche à droite à travers les colonnes, ce qui veut dire que pour i $\leq$$\frac{M}{w_r}$, la i\up{ème} ligne n'est pas nulle de la ((i-1)+1\up{ème}) jusqu'à la i$w_r$\up{ème} colonne). \newline
 Par conséquent, toutes les colonnes de \textbf{H} comportent un seul $1$ dans chacun des ensembles $w_c$.\vspace{0.4cm}\newline
 \textbf{Exemple:} Une matrice de controle de parité régulière(Gallager) tels que : M=10 (colonnes), $w_c$=3, $w_r$= 5\vspace{0.4cm}\newline
 $$H=
@@ -272,13 +272,13 @@ $$H=
 \quad
 $$
 \subsection{Robert Gray Gallager}
-Robert Gray Gallager né en 1931 est un ingénieur américain en éléctricité qui consacré sa vie à travailler dans la théorie de l'information et les réseaux de communication. \newline
-Gallager a reçu son Bachelor of Science Electrical Engineering (BSEE) degree de l'université de Pennsylvanie en 1953. Durant cette époque, il était membre du \textbf{laboratoire téléphonique Bell} puis il a servi pour l'une des branches de l'armée des Etats-Unis qui crée et gère les communications et les systèmes d'information qui est le \textbf{Corps des transmissions de l'armée des Etats-Unis (USASC)}. En 1957, il a décroché sont Master en Sciences (S.M) et en 1960, il est devenu docteur en sciences spécialisé en ingénierie éléctrique. \newline
-Sa thèse de doctorat portait sur les codes de contrôle de parité de basse densité (LDPC) qui a été publié comme un travail d'écriture spécialisé (Monographie) par la presse universitaire de Massachusetts Institute of Technology (MIT) en 1963. Ces \textbf{codes LDPC} parfois appelés \textbf{codes Gallager} sont restés utiles pendant plus de 50 ans. \newline
-Pendant les années 70, Gallager a déplacé son viseur sur les réseaux de données, les algorithmes distribués et les techniques d'accès aléatoire. Dans ce cadre, il a écrit \textbf{Réseaux de données, Pentice Hall}, publié en 1988, avec la deuxième édition en 1992, co-écrite avec \textbf{Dimitri Bertsekas} qui est un mathématicien, ingénieur éléctricien et informaticien qui a contribué à fournir une conception pour ce domaine. \newline
-Quelques années après, la passion de Gallager par la théorie de l'information est revenue, il a misé beaucoup d'énergie sur le thème de la communication sans fil, les réseaux optiques et les processus stochastiques. Il a écrit le \textbf{manuel de 1996, Processus stochastiques discrets}.\newline
-Durant sa carrière, Gallager était \textbf{président de la Société de théorie de l'information IEEE} en 1971, membre de son conseil de gouverneurs 1965-1972 et de nouveau 1979-1988. Il a servi en tant que rédacteur en chef adjoint pour le codage au sein de \textbf{l'IEEE Transactions on Information Theory} pendant la période 1963-1964 et en tant que rédacteur associé pour les communications informatiques de 1977 à 1980. \newline
-En tant que professeur, il a reçu le \textbf{MIT Graduate Student Council Teaching Award} en 1993 et le \textbf{Prix du Japon} en 2020 comme une récompense à cette carrière embellie de beaucoup de succès et d'encadrement d'étudiants qui sont maintenant devenus eux-mêmes des chercheurs. \newline
+Robert Gray Gallager, né en 1931 est un ingénieur américain en éléctricité qui consacra sa vie à travailler sur la théorie de l'information et les réseaux de communication. \newline
+Gallager a reçu son Bachelor of Science Electrical Engineering (BSEE) degree de l'université de Pennsylvanie en 1953. Durant cette époque, il était membre du \textbf{laboratoire téléphonique Bell}. Puis, il servit pour l'une des branches de l'armée des Etats-Unis, qui est responsable de la création des communications et des systèmes d'information du \textbf{Corps des transmissions de l'armée des Etats-Unis (USASC)}. En 1957, Gallager décrocha un Master en Sciences (S.M) et en 1960, il devint docteur en sciences spécialisé en ingénierie éléctrique. \newline
+Sa thèse de doctorat portait sur les codes de contrôle de parité de basse densité (LDPC) qui fût publié comme un travail d'écriture spécialisé (Monographie) par la presse universitaire de Massachusetts Institute of Technology (MIT) en 1963. Ces \textbf{codes LDPC} parfois appelés \textbf{codes Gallager} sont restés utiles pendant plus de 50 ans. \newline
+Pendant les années 70, Gallager s'est dédié aux réseaux de données, les algorithmes distribués et les techniques d'accès aléatoire. Dans ce cadre, il a écrit \textbf{Réseaux de données, Pentice Hall}, publié en 1988, avec la deuxième édition en 1992, co-écrite avec \textbf{Dimitri Bertsekas} qui est un mathématicien, ingénieur éléctricien et informaticien. Ce dernier a contribué à fournir une conception au sein de ce domaine. \newline
+Quelques années après, la passion de Gallager par la théorie de l'information est revenue, il a misé beaucoup d'énergie sur le thème de la communication sans fil, les réseaux optiques et les processus stochastiques. Il écrivit le \textbf{manuel de 1996, Processus stochastiques discrets}.\newline
+Durant sa carrière, Gallager était \textbf{président de la Société de théorie de l'information IEEE} en 1971, membre de son conseil de gouverneurs 1965-1972 et de nouveau 1979-1988. Il a servi en tant que rédacteur en chef adjoint pour le codage au sein de \textbf{l'IEEE Transactions on Information Theory} durant la période de 1963 à 1964 et en tant que rédacteur associé pour les communications informatiques de 1977 à 1980. \newline
+En tant que professeur, il reçut le \textbf{MIT Graduate Student Council Teaching Award} en 1993 et le \textbf{Prix du Japon} en 2020 comme une récompense pour sa carrière embellie de beaucoup de succès et d'encadrement d'étudiants qui sont maintenant devenus eux-mêmes des chercheurs. \newline
 Dans ce travail, on va s'intéresser aux travaux de Gallager effectués sur le thème des codes LDPC (Low Density Parity Check). \newline
 \clearpage
 %-----------------------------------------------------
