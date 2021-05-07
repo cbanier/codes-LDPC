@@ -407,80 +407,80 @@ si le poids ne diminue plus, on ne peut pas décoder le code LDPC. Nous verrons 
 \section{Expérimentations et résultats}
 \label{sec:exp}
 
-Nous avons réaliser plusieurs types d'expériences. Nous avons découvert que plus la taille des matrices est grande, 
-plus l'algorithme de décodage fonctionne. En effet, Pour livrer nos résultats, nous avons choisit des matrices de longueur 
+Nous avons réalisé plusieurs types d'expériences. Nous avons découvert que plus la taille des matrices est grande, 
+plus l'algorithme de décodage fonctionne. En effet, Pour livrer nos résultats, nous avons choisi des matrices de longueur 
 $1000$ et $2000$.
 
-Nous avons implémenter des fonctions\ref{sec:annexe} de façon à pouvoir créer des matrices creuses.
-La fonction \textit{matrixFromWeight(poids,n)} créer une matrice de dimension $\dfrac{n}{2}$ par $n$ de tel sorte que 
-chaque colonne est un poids de valeur $poids$ et est unique. Sinon, notre matrice de parité ne représente pas un code LDPC régulier.\vspace{0.4cm}\newline
-\underline{Objectif de l'expérimentation:} Nous allons essayer de déterminer le poids optimale sur chaque colonne pour décoder un code 
+Nous avons implémenté des fonctions\ref{sec:annexe} de façon à pouvoir créer des matrices creuses.
+La fonction \textit{matrixFromWeight(poids,n)} crée une matrice de dimension $\dfrac{n}{2}$ par $n$ de telle sorte que 
+chaque colonne ait un poids de valeur $poids$ et est unique. Sinon, notre matrice de parité ne représente pas un code LDPC régulier.\vspace{0.4cm}\newline
+\underline{Objectif de l'expérimentation:} Nous allons essayer de déterminer le poids optimal sur chaque colonne pour décoder un code 
 LDPC de longueur $n$.\vspace{0.4cm}\newline
-La méthode adopter est la suivante:
+La méthode adoptée est la suivante:
 \begin{enumerate}
   \item[1.] Construire une matrice dont les colonnes ont un certain poids.
   \item[2.] Observer combien de vecteurs erreurs d'un certain poids, nous arrivons à retrouver grâce à notre algorithme de décodage classique.
-  \item[3.] Essayer d'optimiser l'algorithme de décodage en supprimant les position parasites et donc essayer de décoder plus de vecteurs erreurs (ou non).
+  \item[3.] Essayer d'optimiser l'algorithme de décodage en supprimant les positions parasites et donc essayer de décoder plus de vecteurs erreurs (ou non).
   \item[4.] Comparer les résultats des deux algorithmes.
 \end{enumerate}
 
 \textsc{\textbf{\underline{Remarque :}}} Une position parasite est une colonne de H qui satisfait la condition\newline $\omega(S + h_{i}) \le \omega(S)(1)$ mais qui n'est pas une 
-position érronée. En outre, on va durcir la condition $(1)$ de façon a ignorer ces positions. Pour cela, on essaiera de récupérer les colonnes de H qui font baisser le
+position érronée. En outre, on va durcir la condition $(1)$ de façon à ignorer ces positions. Pour cela, on essaiera de récupérer les colonnes de H qui font baisser le
 syndrome. ($\omega(S + h_{i}) < \omega(S)$ ou encore $\omega(S + h_{i}) < \omega(S) - 1$, par exemple)
 
 \subsection{$n = 1000$}
-Nous réalisons une série d'expériences sur des matrices de dimension 500 par 1000. Pour ce faire, on regarder combien de vecteurs erreurs
-sommes-nous capable de décoder. On se définit un échantillions de 200 vecteurs erreurs puis on calcul la probabilité de décodage en fonction d'un type de matrice donnée.
+Nous réalisons une série d'expériences sur des matrices de dimension 500 par 1000. Pour ce faire, on a regardé combien de vecteurs erreurs
+sommes-nous capable de décoder. On se définit un échantillon de 200 vecteurs erreurs puis on calcule la probabilité de décodage en fonction d'un type de matrice donné.
 En effet, on définit une matrice avec un certain poids sur chaque colonne puis on appelle l'algorithme de décodage.\vspace{0.4cm}\newline
 
 La Table \ref{table:res1} présente un résumé des résultats de nos expérimentations pour $n=1000$ à l'aide de la fonction
-\textit{decode\_LDPC} (étape 2 de la démarche expérimental). 
+\textit{decode\_LDPC} (étape 2 de la démarche expérimentale). 
 
 La Table \ref{table:res2} présente un résumé des résultats de nos expérimentations pour $n=1000$ à l'aide de la fonction
-\textit{decode\_LDPC\_strict} (étape 3 de la démarche expérimental). 
-Pour la fonction \textit{decode\_LDPC\_strict}, nous avons choisit d'essayer de faire baisser le poids du syndrome de 2 à la première itération puis de 1 sur les 
-deux suivantes. Ensuite, l'algorithme se déroule sans contrainte sur les 22 autres itérations.
+\textit{decode\_LDPC\_strict} (étape 3 de la démarche expérimentale). 
+Pour la fonction \textit{decode\_LDPC\_strict}, nous avons choisi d'essayer de faire baisser le poids du syndrome de 2 à la première itération puis de 1 sur les 
+deux suivantes. Ensuite, l'algorithme se déroule sans contraintes sur les 22 autres itérations.
 
 \vspace{0.4cm}
 On peut observer plusieurs choses. Premièrement, sur la table \ref{table:res1} on arrive à décoder les 200 vecteurs erreurs de poids 
-8 sur une matrice dont les colonnes sont de poids 11. Sur cette même colonne, les vecteurs erreurs de poids 7 ne sont pas tous décoder (99\% de décodage).
+8 sur une matrice dont les colonnes sont de poids 11. Sur cette même colonne, les vecteurs erreurs de poids 7 ne sont pas tous décodés (99\% de décodage).
 On peut expliquer cela à cause de l'aléatoire, en effet, nous générons des vecteurs erreurs aléatoirement et des matrices aléatoirement aussi.
-Donc il est possible d'obserser ce type de phénomène puisque les positions des 1 ne vont pas s'intersecter. De ce faite,
+Donc il est possible d'obserser ce type de phénomène puisque les positions des 1 ne vont pas s'intersecter. De ce fait,
 le poids du syndrome ne va pas diminuer mais augmenter.\newline
-Étant donné que nous décodons le plus de vecteurs dont les colonnes sont de poids 11, ce dernier semble être le poids optimale
-pour $n = 1000$. Lorqu'on observe la table \ref{table:res2} les résultats sont convainquants jusqu'à des poids 6 sur les vecteurs erreurs.
-Mais l'optimale semble se situé entre des poids de colonnes qui se situent entre 10 et 12 inclus. On ne décode pas autant de vecteurs erreurs
+Étant donné que nous décodons le plus de vecteurs dont les colonnes sont de poids 11, ce dernier semble être le poids optimal
+pour $n = 1000$. Lorqu'on observe la table \ref{table:res2} les résultats sont convaincants jusqu'au poids 6 sur les vecteurs erreurs.
+Mais l'optimal semble se situer entre des poids de colonnes qui se situent entre 10 et 12 inclus. On ne décode pas autant de vecteurs erreurs
 car en 25 itérations, nous ne parvenons pas à trouver toutes les solutions.
 \clearpage
-\underline{Deux explications possible :}
+\underline{Deux explications possibles :}
 \begin{enumerate}
   \item On diminue trop le poids du syndrome et on oublie des positions
-  \item Ou, on exécute pas assez d'itération
+  \item Ou, on exécute pas assez d'itérations
 \end{enumerate}
 
-Il est difficile de répondre directement à la première explication, cependant on peut lancer nos tests sur plus d'itérations par exemples.
-Nous faisons 50. On arrive à observer des résultats similaires que pour 25 itérations. On ne manipule jamais les mêmes matrices ni les même échantillions de vecteurs erreurs
+Il est difficile de répondre directement à la première explication, cependant on peut lancer nos tests sur plus d'itérations par exemple.
+Nous faisons 50. On arrive à observer des résultats similaires que pour 25 itérations. On ne manipule jamais les mêmes matrices ni les même échantillons de vecteurs erreurs
 puisque nous générons tout aléatoirement. Parfois, on arrive à décoder les 200 vecteurs erreurs de poids 7 mais le plus souvent non.
 On peut donc en déduire expérimentalement que l'on diminue trop le poids du syndrome.\vspace{0.4cm}\newline
 
-\underline{Observations supplémentaire:} L'algortime strict nous permet de décoder beacoup plus de vecteurs erreurs que le premier algorithme. On a fait le choit d'arrêter nos algorithmes
-lorque la dernière probabilité de déocdage calculé est inférieur ou égal à 0.8. En effet, nous avons pue observer que dans tous les cas, si on la probabilité chute drastiquement
-après ce palier donc nous avons juger ces résulats non pertinent. Donc on peut observer que sur la table \ref{table:res1} les résultats chute d'un coups après que la probabilité de décodage soit 
-résonnable. On peut observer ce phénomène sur la colonne des poids 14 par exemple. Si on observe cette même colonne dans la \ref{table:res2} on peut voir que les résultats sont plus lisses.
+\underline{Observations supplémentaires:} L'algorithme strict nous permet de décoder beaucoup plus de vecteurs erreurs que le premier algorithme. On a fait le choix d'arrêter nos algorithmes
+lorque la dernière probabilité de décodage calculé est inférieure ou égale à 0.8. En effet, nous avons pu observer que dans tous les cas, si la probabilité chute drastiquement
+après ce palier donc nous avons jugé ces résulats non pertinents. Donc on peut observer que sur la table \ref{table:res1} les résultats chutent d'un coup après que la probabilité de décodage soit 
+raisonnable. On peut observer ce phénomène sur la colonne des poids 14 par exemple. Si on observe cette même colonne dans la \ref{table:res2} on peut voir que les résultats sont plus lisses.
 
 \subsection{$n = 2000$}
 La Table \ref{table:res3} présente un résumé des résultats de nos expérimentations pour $n=2000$ à l'aide de la fonction
 \textit{decode\_LDPC\_strict}.\vspace{0.4cm}\newline
 Les expériences sur les matrices de dimension $1000$ par $2000$ sont gourmandes en temps et en ressource. La création de la matrice n'est pas instantanée. Par exemple, créer une matrice ayant un poids de 9 sur les colonnes, environ 15 secondes sont nécessaires. 
 Ainsi, nous allons présenter 
-les résultats de \textit{decode\_LDPC\_strict} sur un échantillions de 25 vecteurs erreurs. Et sur 25 itérations maximale de décodage.\vspace{0.4cm}\newline
+les résultats de \textit{decode\_LDPC\_strict} sur un échantillon de 25 vecteurs erreurs. Et sur 25 itérations maximales de décodage.\vspace{0.4cm}\newline
 
 On observe que l'algorithme de décodage fonctionne bien, encore mieux que lorsque $n=1000$. On arrive à décoder jusqu'à 25 vecteurs erreurs de poids 21. Ici, encore, on observe le même phénomène qui est 
-dû à l'aléatoire. Pour ce poids de colonne, on n'observe pas que des probabilités certaines jusqu'au poids 21, cependant il porte à croire que 9 est le poids optimale pour 
+dû à l'aléatoire. Pour ce poids de colonne, on n'observe pas que des probabilités certaines jusqu'au poids 21, cependant il porte à croire que 9 est le poids optimal pour 
 $n = 2000$. En effet, c'est le poids de colonne qui permet de décoder le plus de vecteurs erreurs d'un poids élévé.\vspace{0.4cm}\newline
 
 
-Dans l'ensemble, on a observé que supprimer les position parasites était beaucoup plus éfficasse pour $n=2000$. En effet, on arrive à gagner en terme de capacité de décodage.
+Dans l'ensemble, on a observé que supprimer les positions parasites était beaucoup plus efficace pour $n=2000$. En effet, on arrive à gagner en terme de capacité de décodage.
 
 \clearpage
 %-----------------------------------------------------
