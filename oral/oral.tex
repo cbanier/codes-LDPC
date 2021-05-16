@@ -23,7 +23,9 @@
 
     \begin{frame}
         \frametitle{Introduction et présentation des objectifs}
-        Dans ce travail, nous allons étudier, dans un premier temps, comment fabriquer des instances de code LDPC notamment avec le modèle Gallager. Puis, nous comprendrons comment décoder ces codes en effectuant un tas d'expériences. Et à la fin de ce projet, on essaiera d'optimiser ce dernier en limitant le nombre d'équations à satisfaire par un mot de code erroné.
+        Dans ce travail, nous allons étudier, dans un premier temps, comment fabriquer des instances de code LDPC notamment avec le modèle de Mr.Gallager. 
+        Puis, nous comprendrons comment décoder ces codes en effectuant un tas d'expériences. Et à la fin de ce projet, on essaiera "d'optimiser" ce dernier en 
+        limitant le nombre d'équation à satisfaire par un mot de code erroné.
     \end{frame}
 
     \begin{frame}
@@ -32,7 +34,7 @@
         \begin{enumerate}
             \item Chaque ligne à $p$ valeurs 1.
             \item Chaque colonne à $q$ valeurs 1.
-            \item $p$ et $q$ ont des valeurs petites en comparaison avec la longueur du code et avec le nombre de lignes de la matrice $H$.
+            \item $p$ et $q$ ont des petites valeurs en comparaison avec la longueur du code et avec le nombre de ligne de la matrice $H$.
         \end{enumerate}
     \end{frame}
 
@@ -86,9 +88,6 @@
     \begin{frame}
         \frametitle{Construction des codes LDPC}
         \framesubtitle{La construction de Gallager}
-        On définit les $H_{i}$, les colonnes d'une matrice $H$.\newline
-        Puis les $L_{j}$, les lignes d'une matrice $H$.\newline
-        Et on note $\omega(x)$ le poids de $x$.\newline
         Voici un exemple d'une matrice de Gallager:
         $$H=
         \begin{bmatrix}
@@ -108,7 +107,20 @@
     \begin{frame}
         \frametitle{Construction des codes LDPC}
         \framesubtitle{Construction utilisée pour nos tests}
-        DÉSINER UN EXEMPLE D'UNE MATRICE UTILISÉE
+        Pour nos expérimentations, nous avons créer une fonction qui nous produit une matrice de la forme suivante:
+        \begin{equation*}
+            H = \left[
+            \begin{array}{cccccccccccccc}
+                1&0&0&0&1&0&1&0&0&1&0&1&1&0 \\
+                1&1&1&1&1&0&0&0&0&0&1&1&0&1 \\
+                1&1&0&0&0&1&0&1&0&0&0&0&0&0 \\
+                0&0&1&0&0&0&1&1&1&0&1&0&1&0 \\
+                0&1&0&0&1&1&0&0&1&0&0&0&1&1 \\
+                0&0&1&1&0&1&1&0&0&1&0&1&0&0 \\
+                0&0&0&1&0&0&0&1&1&1&1&0&0&1 
+            \end{array}
+            \right]
+        \end{equation*}
     \end{frame}
 
     \begin{frame}
@@ -122,10 +134,70 @@
 
     \begin{frame}
         \frametitle{Expérimentations}
+        Modification de la ligne 5 de l'algorithme précédant: 
+        \begin{center}
+            $\omega(S + h_{i}) \le \omega(S)$
+        \end{center}
+        \vspace{0.4cm}
+        On essaie d'exclure les positions parasites:
+        $\omega(S + h_{i}) \le \omega(S) - a$, pour un entier $a$ fixé.
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Expérimentations ; n=1000}
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[scale=0.5]{res1000_n1.png}
+            \label{fig:res1}
+        \end{figure}
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[scale=0.5]{res1000_n2.png}
+            \label{fig:res2}
+            \caption{Probabilité de décodage sur 200 vecteurs erreurs d'un certain poids en fonction du poids des colonnes d'une matrice de code LDPC}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Expérimentations ; n=1000}
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[scale=0.5]{res1000_opti1.png}
+            \label{fig:res3}
+        \end{figure}
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[scale=0.5]{res1000_opti2.png}
+            \label{fig:res4}
+            \caption{Probabilité de décodage sur 200 vecteurs erreurs d'un certain poids en fonction du poids des colonnes d'une matrice de code LDPC}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Expérimentations ; n=2000}
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[scale=0.35]{res2000_1.png}
+            \label{fig:res5}
+        \end{figure}
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[scale=0.35]{res2000_2.png}
+            \label{fig:res6}
+            \caption{Probabilité de décodage sur 25 vecteurs erreurs d'un certain poids en fonction du poids des colonnes d'une matrice de code LDPC}
+        \end{figure}
     \end{frame}
 
     \begin{frame}
         \frametitle{Conclusion}
+        \begin{enumerate}
+            \item Plus la taille des matrices augmente, plus l'algorithme de décodage fonctionne bien.
+            \item La suppressions des positions parasites améliore la qualité des résultats mais on ne décode pas forcément plus.
+            \item Une diminution exagérée du poids du syndrome entraine un oubli de certaine position érronée.
+        \end{enumerate}
+        \vspace{1cm}
+        Nous adressons nos remerciements à Mr. Zémor Éric de nous avoir guider dans la réalisation et l'implémentation de ce projet.
+
     \end{frame}
 
 \end{document}
